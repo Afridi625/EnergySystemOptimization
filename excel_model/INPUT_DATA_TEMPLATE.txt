@@ -1,0 +1,117 @@
+ENERGY SYSTEM OPTIMIZATION MODEL - INPUT DATA TEMPLATE
+
+================================
+SHEET: INPUT_DATA
+================================
+
+A1: [HEADER]
+A2: MODEL PARAMETERS
+A3: 
+A4: Start Year:                          | B4: 2024
+A5: End Year:                            | B5: 2044
+A6: Number of Years:                     | B6: =B5-B4+1
+A7: 
+A8: Time Resolution:                     | B8: Hourly
+A9: Annual Time Periods:                 | B9: 8760
+A10: Discount Rate (%):                  | B10: 5.0
+A11: Currency:                           | B11: USD
+A12:
+A13: ================================
+A14: REGIONS
+A15:
+A16: Number of Regions:                  | B16: 3
+A17: 
+A18: Region Names:
+A19: Region 1:                           | B19: North
+A20: Region 2:                           | B20: Central
+A21: Region 3:                           | B21: South
+A22:
+A23: ================================
+A24: TECHNOLOGIES
+A25: 
+A26: Technology Name | Type | Efficiency | Lifetime (yrs) | Inv Cost ($/MW) | Fixed O&M ($/MW/yr) | Var Cost ($/MWh) | Cap Factor | Min Load | Ramp Up | Ramp Down | Existing Cap (MW) | CO2 Factor
+A27: Coal Plant      | Thermal | 0.35 | 40 | 2,500,000 | 50,000 | 25 | 0.85 | 0.40 | 0.05 | 0.05 | 2000 | 2400
+A28: Nat Gas        | Thermal | 0.50 | 30 | 1,800,000 | 35,000 | 35 | 0.80 | 0.30 | 0.10 | 0.10 | 1500 | 2200
+A29: Solar PV      | Renewable | 1.00 | 25 | 1,500,000 | 15,000 | 0 | 0.25 | 0.00 | 1.00 | 1.00 | 500 | 0
+A30: Wind Turbine  | Renewable | 1.00 | 25 | 1,800,000 | 20,000 | 0 | 0.35 | 0.00 | 1.00 | 1.00 | 300 | 0
+A31: Hydro Plant   | Renewable | 0.90 | 50 | 3,000,000 | 40,000 | 0 | 0.60 | 0.00 | 0.50 | 0.50 | 400 | 0
+A32: Nuclear Plant | Thermal | 0.33 | 60 | 4,000,000 | 80,000 | 10 | 0.90 | 0.50 | 0.01 | 0.01 | 0 | 0
+A33: Battery Stor  | Storage | 0.85 | 10 | 2,000,000 | 25,000 | 5 | 1.00 | 0.00 | 1.00 | 1.00 | 0 | 0
+A34: Heat Pump     | Conversion | 3.00 | 20 | 1,200,000 | 20,000 | 15 | 1.00 | 0.00 | 0.50 | 0.50 | 0 | 100
+A35:
+A36: ================================
+A37: DEMAND BY TYPE AND REGION
+A38:
+A39: Demand Type | Region | Annual Demand (MWh) | Time Profile Factor
+A40: Electricity | North | 15,000 | 1.2 (winter peak)
+A41: Electricity | Central | 20,000 | 1.0 (uniform)
+A42: Electricity | South | 15,000 | 0.8 (summer valley)
+A43: Space Heating | North | 12,000 | 2.0 (winter peak)
+A44: Space Heating | Central | 8,000 | 1.8 (winter peak)
+A45: Space Heating | South | 5,000 | 1.2 (mild winter)
+A46: Water Heating | North | 3,000 | 1.3
+A47: Water Heating | Central | 4,000 | 1.2
+A48: Water Heating | South | 3,000 | 1.0
+A49: Transport | North | 8,000 | 1.0 (uniform)
+A50: Transport | Central | 10,000 | 1.0 (uniform)
+A51: Transport | South | 5,000 | 1.0 (uniform)
+A52: Industrial | North | 5,000 | 1.0 (uniform)
+A53: Industrial | Central | 10,000 | 1.0 (uniform)
+A54: Industrial | South | 8,000 | 1.0 (uniform)
+A55:
+A56: ================================
+A57: FOSSIL FUEL RESOURCES
+A58:
+A59: Fuel Type | Available Qty | Cost ($/unit) | CO2 Factor (kg/unit)
+A60: Coal | 1,000,000 tonnes | 50 | 2400
+A61: Nat Gas | 500,000 MWh | 100 | 2200
+A62: Oil | 300,000 MWh | 150 | 3150
+A63:
+A64: ================================
+A65: RENEWABLE RESOURCE POTENTIAL
+A66:
+A67: Resource | Max Potential (MW) | Capacity Factor | Seasonal Var
+A68: Solar | 10,000 | 25% | High (summer peak)
+A69: Wind | 8,000 | 35% | Medium (winter peak)
+A70: Hydro | 5,000 | 60% | Low (variable)
+A71: Biomass | 2,000 | 80% | Medium
+A72:
+A73: ================================
+A74: CONSTRAINTS AND LIMITS
+A75:
+A76: Constraint Type | Min Limit | Max Limit | Unit
+A77: Coal Plant Capacity | 0 | 5,000 | MW
+A78: Nat Gas Capacity | 0 | 4,000 | MW
+A79: Solar Capacity | 0 | 10,000 | MW
+A80: Wind Capacity | 0 | 8,000 | MW
+A81: Hydro Capacity | 0 | 5,000 | MW
+A82: Nuclear Capacity | 0 | 3,000 | MW
+A83: Battery Capacity | 0 | 2,000 | MW
+A84: Heat Pump Capacity | 0 | 5,000 | MW
+A85: 
+A86: CO2 Emission Limit | 0 | 3,000,000 | tonnes/year
+A87: Renewable Minimum | 30% | 100% | of demand
+A88: Demand Satisfaction | 100% | 100% | required
+A89:
+A90: ================================
+A91: TRANSMISSION BETWEEN REGIONS (if used)
+A92:
+A93: Link | From Region | To Region | Capacity (MW) | Loss Factor
+A94: 1 | North | Central | 2,000 | 2%
+A95: 2 | Central | South | 2,000 | 2%
+A96: 3 | South | North | 1,000 | 3%
+A97:
+A98: ================================
+A99: END OF INPUT DATA
+
+================================
+INSTRUCTIONS FOR INPUT_DATA SHEET:
+================================
+
+1. YELLOW CELLS: These are inputs that you should modify based on your scenario
+2. WHITE CELLS: These are calculated or informational
+3. Make sure all values are in consistent units
+4. Technology efficiency should be 0 to 1 (or >1 for heat pumps)
+5. Discount rate should be as decimal (0.05 = 5%)
+6. Capacity factors should be 0 to 1
+7. Emission factors should be in kg CO2 per unit of energy

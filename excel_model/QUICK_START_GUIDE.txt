@@ -1,0 +1,175 @@
+# ENERGY SYSTEM OPTIMIZATION MODEL - QUICK START GUIDE
+
+## WHAT IS THIS?
+
+A complete energy system optimization model in Microsoft Excel that can be solved
+using OpenSolver or Frontline Solver.
+
+## WHAT DOES IT DO?
+
+The model determines:
+- How much capacity to invest in each technology (coal, gas, solar, wind, etc.)
+- How much energy each technology should produce each year
+- Total cost and emissions
+
+Objective: **MINIMIZE total system cost** while satisfying all demand.
+
+## FILE STRUCTURE
+
+The Excel workbook (Energy_System_Optimization_Model.xlsx) contains 6 sheets:
+
+1. **Instructions** - How to use the model
+2. **Input_Data** - Your parameters (modify these)
+3. **Variables** - Decisions (solver fills these)
+4. **Constraints** - Limits (energy balance, capacity, emissions)
+5. **Objective** - Total cost calculation
+6. **Results** - Optimal solution
+
+## COLOR CODING
+
+- **YELLOW** = Input cells (modify these)
+- **GREEN** = Decision variables (solver will determine)
+- **ORANGE** = Constraint definitions
+- **BLUE** = Results (read-only)
+
+## QUICK START (5 STEPS)
+
+### 1. DOWNLOAD AND INSTALL
+- Download Energy_System_Optimization_Model.xlsx
+- Download OpenSolver from https://opensolver.com
+- Install OpenSolver as Excel add-in
+
+### 2. OPEN THE MODEL
+- Open Energy_System_Optimization_Model.xlsx in Excel
+- Go to Instructions sheet
+- Read overview
+
+### 3. CUSTOMIZE INPUT DATA
+- Go to Input_Data sheet
+- Modify yellow cells:
+  - Change demand values
+  - Update technology costs
+  - Set capacity limits
+  - Adjust discount rate
+
+### 4. SET UP SOLVER
+- Go to Data tab
+- Click OpenSolver
+- Click "Open and Solve"
+- Configure:
+  - Target Cell: Objective!$D$50
+  - Minimize: (checked)
+  - Changing Cells: Variables!$B$5:$G$25
+  - Add Constraints: (from Constraints sheet)
+
+### 5. RUN AND VIEW RESULTS
+- Click Solve
+- Wait for completion (seconds to minutes)
+- Click "Keep Solution"
+- Go to Results sheet to see optimal:
+  - Installed capacity
+  - Energy output
+  - Total cost
+  - Emissions
+
+## KEY CONCEPTS
+
+### Decision Variables (What Solver Optimizes)
+- **New Capacity**: MW of new capacity to build for each technology per year
+- **Energy Output**: MWh of energy produced by each technology per year
+
+### Constraints (What Solver Must Satisfy)
+- **Energy Balance**: Supply must meet demand
+- **Capacity Limits**: Can't exceed maximum capacity
+- **Emissions Limit**: Can't exceed CO2 allowance
+- **Supply Requirement**: Must serve 100% of demand
+
+### Objective (What Solver Minimizes)
+- **Total Cost** = Investment Cost + Operating Cost
+- Includes annualized capital costs
+- Includes annual fixed and variable operating costs
+
+## EXAMPLE RESULTS
+
+After solving, you might see:
+
+```
+Optimal Capacity by Year 21:
+- Coal: 2,000 MW (some existing, no new)
+- Natural Gas: 1,500 MW (some existing, no new)
+- Solar: 3,500 MW (0 existing, 3,500 new)
+- Wind: 2,000 MW (0 existing, 2,000 new)
+- Hydro: 1,000 MW (existing only)
+- Battery: 500 MW (0 existing, 500 new)
+
+Total Annual Cost: $150 million
+Total CO2 Emissions: 1.2 million tonnes
+Renewable Percentage: 45%
+```
+
+## COMMON MODIFICATIONS
+
+### Change Discount Rate
+- Go to Input_Data!B5
+- Change value (currently 5%)
+
+### Add Emission Limit
+- Go to Input_Data!Constraints section
+- Set CO2 limit (e.g., 2,000,000 tonnes)
+- Add constraint to solver
+
+### Change Time Horizon
+- Go to Input_Data!B2
+- Change "End Year" (currently 2044)
+
+### Add New Technology
+- Add row in Input_Data!Technologies
+- Add decision variable in Variables sheet
+- Add constraints
+- Add to objective function
+
+## TROUBLESHOOTING
+
+| Problem | Solution |
+|---------|----------|
+| OpenSolver not found | Download from opensolver.com and reinstall |
+| "Solver: Could not find a solution" | Add more capacity to constraints, or relax demand |
+| Results show 0 capacity everywhere | Check that demand isn't too high or costs aren't wrong |
+| Solver takes too long | Reduce number of years or technologies |
+| Formulas show #REF! error | Check cell references in formulas |
+
+## TECHNICAL DETAILS
+
+### Model Type
+- Linear Programming (LP) with integer variables
+- Minimization problem
+
+### Problem Size
+- Variables: ~50-100 decision variables
+- Constraints: ~100-200 constraints
+- Typical solve time: < 1 second (GLPK) to 10 seconds (large models)
+
+### Solver Engines
+1. **GLPK** (Free): Good for small-medium problems
+2. **Frontline Solver** (Commercial): Good for large problems
+3. **Gurobi** (Commercial): Very fast, best for large models
+4. **Excel Solver** (Built-in): Limited, only for very small problems
+
+## GETTING HELP
+
+- **OpenSolver Help**: https://opensolver.com/help
+- **Model Questions**: See Instructions sheet in workbook
+- **Excel Help**: https://support.microsoft.com/en-us/excel
+
+## NEXT STEPS
+
+1. ✅ Install and test the basic model
+2. ✅ Customize with your own data
+3. ✅ Run optimization
+4. ✅ Review and analyze results
+5. ✅ Run scenario analysis (e.g., high CO2 price)
+6. ✅ Extend model (add storage, transmission, etc.)
+
+---
+
+**Ready to optimize your energy system!** 🔋⚡🌱

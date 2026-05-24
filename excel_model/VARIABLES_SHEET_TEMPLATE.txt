@@ -1,0 +1,137 @@
+ENERGY SYSTEM OPTIMIZATION MODEL - VARIABLES SHEET TEMPLATE
+
+================================
+SHEET: VARIABLES
+================================
+
+This sheet contains all decision variables that the optimizer will determine.
+These cells start with initial values (0) and are optimized by the solver.
+
+================================
+TABLE 1: NEW CAPACITY INSTALLATIONS (MW)
+================================
+
+Row 1: [HEADER]
+Row 2: 
+Row 3: NEW CAPACITY INSTALLATIONS BY TECHNOLOGY (MW)
+Row 4:
+Row 5:          | Year 1 | Year 2 | Year 3 | Year 4 | Year 5 | ... | Year 21
+A5: Technology  | B5: 2024 | C5: 2025 | D5: 2026 | E5: 2027 | F5: 2028 | ... | Y5: 2044
+Row 6: [border line]
+A7: Coal Plant  | B7: 0 | C7: 0 | D7: 0 | E7: 0 | F7: 0 | ... | Y7: 0
+A8: Nat Gas     | B8: 0 | C8: 0 | D8: 0 | E8: 0 | F8: 0 | ... | Y8: 0
+A9: Solar PV    | B9: 0 | C9: 0 | D9: 0 | E9: 0 | F9: 0 | ... | Y9: 0
+A10: Wind       | B10: 0 | C10: 0 | D10: 0 | E10: 0 | F10: 0 | ... | Y10: 0
+A11: Hydro      | B11: 0 | C11: 0 | D11: 0 | E11: 0 | F11: 0 | ... | Y11: 0
+A12: Nuclear    | B12: 0 | C12: 0 | D12: 0 | E12: 0 | F12: 0 | ... | Y12: 0
+A13: Battery    | B13: 0 | C13: 0 | D13: 0 | E13: 0 | F13: 0 | ... | Y13: 0
+A14: Heat Pump  | B14: 0 | C14: 0 | D14: 0 | E14: 0 | F14: 0 | ... | Y14: 0
+
+Formulas: All cells are initialized to 0. Solver will change these.
+Format: Number, 1 decimal place, green background
+
+================================
+TABLE 2: TOTAL INSTALLED CAPACITY (MW)
+================================
+
+Row 17:
+Row 18: TOTAL INSTALLED CAPACITY BY TECHNOLOGY (MW)
+Row 19:
+Row 20:          | Year 1 | Year 2 | Year 3 | Year 4 | Year 5 | ... | Year 21
+A20: Technology  | B20: 2024 | C20: 2025 | D20: 2026 | E20: 2027 | F20: 2028 | ... | Y20: 2044
+Row 21: [border]
+A22: Coal Plant  | B22: =Input!Existing + B7 | C22: =Input!Existing + C7 | ... | Y22: =Input!Existing + Y7
+A23: Nat Gas     | B23: =Input!Existing + B8 | C23: =Input!Existing + C8 | ... | Y23: =Input!Existing + Y8
+A24: Solar PV    | B24: =SUM($B$9:B9) | C24: =SUM($B$9:C9) | ... | Y24: =SUM($B$9:Y9)  (cumulative)
+A25: Wind        | B25: =SUM($B$10:B10) | C25: =SUM($B$10:C10) | ... | Y25: =SUM($B$10:Y10)  (cumulative)
+A26: Hydro       | B26: =Input!Existing | C26: =Input!Existing | ... | Y26: =Input!Existing  (no new)
+A27: Nuclear     | B27: =SUM($B$12:B12) | C27: =SUM($B$12:C12) | ... | Y27: =SUM($B$12:Y12)
+A28: Battery     | B28: =SUM($B$13:B13) | C28: =SUM($B$13:C13) | ... | Y28: =SUM($B$13:Y13)
+A29: Heat Pump   | B29: =SUM($B$14:B14) | C29: =SUM($B$14:C14) | ... | Y29: =SUM($B$14:Y14)
+
+Note: Coal and Nat Gas use simple addition (existing + new)
+Note: Solar, Wind, Nuclear, Battery, Heat Pump use cumulative sum
+
+================================
+TABLE 3: ENERGY OUTPUT BY TECHNOLOGY (MWh/year)
+================================
+
+Row 32:
+Row 33: ANNUAL ENERGY OUTPUT BY TECHNOLOGY (MWh)
+Row 34:
+Row 35:          | Year 1 | Year 2 | Year 3 | Year 4 | Year 5 | ... | Year 21
+A35: Technology  | B35: 2024 | C35: 2025 | D35: 2026 | E35: 2027 | F35: 2028 | ... | Y35: 2044
+Row 36: [border]
+A37: Coal Plant  | B37: =MIN(B22 * Availability * CapFactor * 8760, Demand_Coal) | ...
+A38: Nat Gas     | B38: =MIN(B23 * Availability * CapFactor * 8760, Demand_Gas) | ...
+A39: Solar PV    | B39: =B24 * 0.25 * 8760 | C39: =C24 * 0.25 * 8760 | ...
+A40: Wind        | B40: =B25 * 0.35 * 8760 | C40: =C25 * 0.35 * 8760 | ...
+A41: Hydro       | B41: =B26 * 0.60 * 8760 | C41: =C26 * 0.60 * 8760 | ...
+A42: Nuclear     | B42: =B27 * 0.90 * 8760 | C42: =C27 * 0.90 * 8760 | ...
+A43: Battery     | B43: 0 | C43: 0 | ... (handled by charge/discharge)
+A44: Heat Pump   | B44: =B29 * 3.0 * 0.9 * 8760 | ... (if operating)
+
+Formulas: Capacity × Capacity Factor × Hours per Year
+Format: Number, 0 decimal places, green background
+
+================================
+TABLE 4: STORAGE OPERATIONS (if Battery included)
+================================
+
+Row 47:
+Row 48: BATTERY STORAGE OPERATIONS (MWh, MW)
+Row 49:
+Row 50:                    | Year 1 | Year 2 | Year 3 | ... | Year 21
+A50: Parameter            | B50: 2024 | C50: 2025 | D50: 2026 | ... | Y50: 2044
+Row 51: [border]
+A52: Charge (MWh/hour)   | B52: 0 | C52: 0 | ... (solver variable)
+A53: Discharge (MWh/hour) | B53: 0 | C53: 0 | ... (solver variable)
+A54: Storage Level (MWh)  | B54: =B52 - B53/0.85 | C54: ... (energy balance)
+A55: Max Level (MWh)      | B55: =B28 * 5 | ... (storage capacity × days)
+A56: Constraint: Level <= Max | B56: =IF(B54<=B55, "OK", "VIOLATED") | ...
+
+================================
+TABLE 5: REGIONAL ENERGY FLOWS (if transmission modeled)
+================================
+
+Row 59:
+Row 60: ENERGY TRANSMISSION BETWEEN REGIONS (MWh/year)
+Row 61:
+Row 62:              | Year 1 | Year 2 | ... | Year 21
+A62: Flow Link       | B62: 2024 | C62: 2025 | ... | Y62: 2044
+Row 63: [border]
+A64: North->Central | B64: 0 | C64: 0 | ... (solver variable)
+A65: Central->South | B65: 0 | C65: 0 | ...
+A66: South->North   | B66: 0 | C66: 0 | ...
+
+================================
+NOTES:
+================================
+
+1. All cells with solver variables should have:
+   - Format: Number with 1-2 decimal places
+   - Fill Color: Light Green (RGB: 226, 239, 218)
+   - Border: All sides
+
+2. Initial values should be 0 or small feasible values
+
+3. Formulas should reference Input_Data sheet for parameters
+
+4. Objective sheet will reference these cells in cost calculations
+
+5. Constraints sheet will define limits on these variables
+
+6. Results sheet will pull optimal values from these cells
+
+================================
+OPENSOLVER CONFIGURATION:
+================================
+
+Changing Cells: Variables!$B$7:$Y$14
+  (New capacity installations for all technologies and years)
+
+Alternatively:
+Changing Cells: Variables!$B$7:$Y$44
+  (All energy outputs and dispatch decisions)
+
+Depending on model formulation (capacity-based or dispatch-based)

@@ -1,0 +1,158 @@
+ENERGY SYSTEM OPTIMIZATION MODEL - CONSTRAINTS SHEET TEMPLATE
+
+================================
+SHEET: CONSTRAINTS
+================================
+
+This sheet defines all constraints that the optimizer must satisfy.
+Each constraint has: Left Side | Operator | Right Side
+
+================================
+SECTION 1: ENERGY BALANCE CONSTRAINTS
+================================
+
+Row 1: ENERGY BALANCE CONSTRAINTS
+Row 2:
+Row 3: Constraint Name | Left Side (Supply) | Op | Right Side (Demand) | Status
+       Formula Reference | MWh/year | <= | MWh/year | OK/VIOLATED
+
+Row 4: [Header]
+A4: Electricity_Demand_North | B4: =SUM(relevant output) | C4: >= | D4: =Input!Electricity_Demand_North | E4: =IF(B4>=D4,"OK","VIO")
+A5: Electricity_Demand_Central | B5: =SUM(...) | C5: >= | D5: =Input!Electricity_Demand_Central | E5: =IF(B5>=D5,"OK","VIO")
+A6: Electricity_Demand_South | B6: =SUM(...) | C6: >= | D6: =Input!Electricity_Demand_South | E6: =IF(B6>=D6,"OK","VIO")
+A7: SpaceHeating_Demand_North | B7: =SUM(...) | C7: >= | D7: =Input!SpaceHeating_North | E7: =IF(B7>=D7,"OK","VIO")
+A8: SpaceHeating_Demand_Central | B8: =SUM(...) | C8: >= | D8: =Input!SpaceHeating_Central | E8: =IF(B8>=D8,"OK","VIO")
+A9: SpaceHeating_Demand_South | B9: =SUM(...) | C9: >= | D9: =Input!SpaceHeating_South | E9: =IF(B9>=D9,"OK","VIO")
+A10: Transport_Demand_North | B10: =SUM(...) | C10: >= | D10: =Input!Transport_North | E10: =IF(B10>=D10,"OK","VIO")
+A11: Transport_Demand_Central | B11: =SUM(...) | C11: >= | D11: =Input!Transport_Central | E11: =IF(B11>=D11,"OK","VIO")
+A12: Transport_Demand_South | B12: =SUM(...) | C12: >= | D12: =Input!Transport_South | E12: =IF(B12>=D12,"OK","VIO")
+
+Note: Each supply formula sums energy from technologies that provide that service
+Example for Electricity_North: =Variables!Coal_North + Variables!Gas_North + Variables!Solar_North + Variables!Wind_North + ...
+
+================================
+SECTION 2: CAPACITY CONSTRAINTS
+================================
+
+Row 14: CAPACITY CONSTRAINTS (Maximum)
+Row 15:
+Row 16: Constraint Name | Left Side (Total Capacity) | Op | Right Side (Max) | Status
+A16: Coal_Max_Capacity | B16: =Variables!Coal_TotalCapacity | C16: <= | D16: =Input!Coal_Max | E16: =IF(B16<=D16,"OK","VIO")
+A17: NatGas_Max_Capacity | B17: =Variables!NatGas_TotalCapacity | C17: <= | D17: =Input!NatGas_Max | E17: =IF(B17<=D17,"OK","VIO")
+A18: Solar_Max_Capacity | B18: =Variables!Solar_TotalCapacity | C18: <= | D18: =Input!Solar_Max | E18: =IF(B18<=D18,"OK","VIO")
+A19: Wind_Max_Capacity | B19: =Variables!Wind_TotalCapacity | C19: <= | D19: =Input!Wind_Max | E19: =IF(B19<=D19,"OK","VIO")
+A20: Hydro_Max_Capacity | B20: =Variables!Hydro_TotalCapacity | C20: <= | D20: =Input!Hydro_Max | E20: =IF(B20<=D20,"OK","VIO")
+A21: Nuclear_Max_Capacity | B21: =Variables!Nuclear_TotalCapacity | C21: <= | D21: =Input!Nuclear_Max | E21: =IF(B21<=D21,"OK","VIO")
+A22: Battery_Max_Capacity | B22: =Variables!Battery_TotalCapacity | C22: <= | D22: =Input!Battery_Max | E22: =IF(B22<=D22,"OK","VIO")
+A23: HeatPump_Max_Capacity | B23: =Variables!HeatPump_TotalCapacity | C23: <= | D23: =Input!HeatPump_Max | E23: =IF(B23<=D23,"OK","VIO")
+
+Row 24: [blank]
+Row 25: CAPACITY CONSTRAINTS (Minimum)
+Row 26:
+A26: Coal_Min_Capacity | B26: =Variables!Coal_TotalCapacity | C26: >= | D26: =Input!Coal_Min | E26: =IF(B26>=D26,"OK","VIO")
+A27: NatGas_Min_Capacity | B27: =Variables!NatGas_TotalCapacity | C27: >= | D27: =Input!NatGas_Min | E27: =IF(B27>=D27,"OK","VIO")
+A28: (continue for all...)
+
+================================
+SECTION 3: EMISSION CONSTRAINTS
+================================
+
+Row 32: EMISSION CONSTRAINTS
+Row 33:
+Row 34: Constraint Name | Left Side (Total Emissions) | Op | Right Side (Limit) | Status
+A34: CO2_Emissions_Limit | B34: =SUM(EnergyOutput * EmissionFactor) | C34: <= | D34: =Input!CO2_Limit | E34: =IF(B34<=D34,"OK","VIO")
+A35: Detailed Calc: B34 = Variables!Coal_Output*2400 + Variables!NatGas_Output*2200 + Variables!Oil_Output*3150 + ...
+
+A36: NOx_Emissions_Limit | B36: =SUM(EnergyOutput * NOx_Factor) | C36: <= | D36: =Input!NOx_Limit | E36: =IF(B36<=D36,"OK","VIO")
+A37: SO2_Emissions_Limit | B37: =SUM(EnergyOutput * SO2_Factor) | C37: <= | D37: =Input!SO2_Limit | E37: =IF(B37<=D37,"OK","VIO")
+
+================================
+SECTION 4: RENEWABLE ENERGY CONSTRAINT
+================================
+
+Row 39: RENEWABLE MINIMUM CONSTRAINT
+Row 40:
+A40: Renewable_Minimum | B40: =Variables!Solar_Output + Variables!Wind_Output + Variables!Hydro_Output | C40: >= | D40: =SUM(All Demands) * 0.30 | E40: =IF(B40>=D40,"OK","VIO")
+
+Explanation: At least 30% of total energy demand must come from renewables
+
+================================
+SECTION 5: STORAGE CONSTRAINTS
+================================
+
+Row 42: STORAGE CONSTRAINTS
+Row 43:
+A43: Battery_Level_Limit | B43: =Variables!Battery_StorageLevel | C43: <= | D43: =Variables!Battery_StorageCapacity | E43: =IF(B43<=D43,"OK","VIO")
+A44: Battery_Discharge_Limit | B44: =Variables!Battery_Discharge | C44: <= | D44: =Variables!Battery_StorageCapacity | E44: =IF(B44<=D44,"OK","VIO")
+A45: Battery_Charge_Limit | B45: =Variables!Battery_Charge | C45: <= | D45: =Variables!Battery_StorageCapacity | E45: =IF(B45<=D45,"OK","VIO")
+
+================================
+SECTION 6: TRANSMISSION CONSTRAINTS (if used)
+================================
+
+Row 47: TRANSMISSION CONSTRAINTS
+Row 48:
+A48: North_to_Central_Flow | B48: =Variables!Flow_N2C | C48: <= | D48: =Input!Transmission_N2C_Capacity | E48: =IF(B48<=D48,"OK","VIO")
+A49: Central_to_South_Flow | B49: =Variables!Flow_C2S | C49: <= | D49: =Input!Transmission_C2S_Capacity | E49: =IF(B49<=D49,"OK","VIO")
+A50: South_to_North_Flow | B50: =Variables!Flow_S2N | C50: <= | D50: =Input!Transmission_S2N_Capacity | E50: =IF(B50<=D50,"OK","VIO")
+
+================================
+SECTION 7: TECHNOLOGY-SPECIFIC CONSTRAINTS
+================================
+
+Row 52: TECHNOLOGY-SPECIFIC CONSTRAINTS
+Row 53:
+A53: Nuclear_Max_Output | B53: =Variables!Nuclear_Output | C53: <= | D53: =Variables!Nuclear_Capacity * 0.5 | E53: =IF(B53<=D53,"OK","VIO")
+(Nuclear can be at most 50% of total capacity)
+
+A54: Coal_Minimum_Baseload | B54: =Variables!Coal_Output | C54: >= | D54: =SUM(Base Loads) | E54: =IF(B54>=D54,"OK","VIO")
+(Coal must provide minimum baseload)
+
+A55: Gas_Peaking_Limit | B55: =Variables!NatGas_Output | C55: <= | D55: =SUM(Peak Loads) | E55: =IF(B55<=D55,"OK","VIO")
+(Gas is limited to peaking duty)
+
+================================
+SECTION 8: SUMMARY
+================================
+
+Row 57: CONSTRAINT VIOLATION SUMMARY
+Row 58:
+A58: Total Constraints: | B58: =COUNTA(A4:A56)
+A59: Violated Constraints: | B59: =COUNTIF(E4:E56,"VIO")
+A60: Status: | C60: =IF(B59=0,"FEASIBLE","INFEASIBLE")
+
+If C60 shows "INFEASIBLE", you need to relax some constraints or increase capacity limits.
+
+================================
+OPENSOLVER CONFIGURATION:
+================================
+
+When setting up OpenSolver:
+
+1. Go to Data > OpenSolver > Open and Solve
+2. Target Cell: Objective!$D$50
+3. To: Minimize
+4. Changing Cells: Variables!$B$7:$Y$44
+5. Subject To Constraints: Add all from Constraints sheet
+   - Electricity_Demand_North >= (in column D)
+   - Electricity_Demand_Central >= (in column D)
+   - ... (all energy balance constraints)
+   - Coal_Max_Capacity <= (in column D)
+   - ... (all capacity constraints)
+   - CO2_Emissions_Limit <= (in column D)
+   - Renewable_Minimum >= (in column D)
+
+6. Solver: GLPK (free) or Gurobi (commercial)
+7. Time Limit: 300 seconds
+8. Optimality Gap: 0.01 (1%)
+
+================================
+NOTES:
+================================
+
+1. Each row is one constraint
+2. Green cells = constraint is satisfied (OK)
+3. Red cells = constraint is violated (VIO)
+4. Adjust right side values if constraints are too restrictive
+5. Some constraints are alternatives (e.g., min OR max, not both)
+6. All formulas should reference named ranges for clarity
